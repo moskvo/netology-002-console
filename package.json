@@ -5,7 +5,7 @@
   "main": "date.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "console002": "node date.js"
+    "console002-1": "node date.js"
   },
   "author": "vsevolod korepanov",
   "license": "ISC",
