@@ -2,9 +2,10 @@
   "name": "002-console",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "date.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "console002": "node date.js"
   },
   "author": "vsevolod korepanov",
   "license": "ISC",
