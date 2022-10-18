@@ -10,6 +10,6 @@
   "author": "vsevolod korepanov",
   "license": "ISC",
   "dependencies": {
-    "yargs": "^17.6.0"
+    "firstline": "^2.0.2"
   }
 }
