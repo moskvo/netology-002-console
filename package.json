@@ -2,13 +2,17 @@
   "name": "002-console",
   "version": "1.0.0",
   "description": "",
-  "main": "game.js",
+  "main": "http-module.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node -r dotenv/config http-module.js tokio"
   },
   "author": "vsevolod korepanov",
   "license": "ISC",
   "dependencies": {
-    "firstline": "^2.0.2"
+    "yargs": "^17.6.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }
