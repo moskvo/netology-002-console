@@ -10,7 +10,6 @@
   "author": "vsevolod korepanov",
   "license": "ISC",
   "dependencies": {
-    "cli-table": "^0.3.11",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
