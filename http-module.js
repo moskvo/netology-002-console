@@ -1,29 +1,49 @@
 const argv = require('yargs/yargs')(process.argv.slice(2))
-    .option('d',{
-        alias: 'days',
-        type:'number',
-        default: 1,
-        describe: 'от 1 до 14 дней для прогноза'
-        })
     .check((argv,options)=>{
-        if( argv.d < 1 || argv.d > 14 ) throw new Error("Аргумент 'days' не из набора {1,...,14}")
-        const c = argv._
+        if( argv._.length < 1 ) return false
+        return true
         })
     .argv
 
-if( process.argv.length < 3){
-    console.log('Type city as argument, please')
-    process.exit(1)
-}
-const http = require('http')
-const { argv } = require('process')
+const city = argv._.join(' ')
 
-const city = process.argv[2]
+const http = require('http')
+
 const TOKEN = process.env.WEATHERSTACK_TOKEN
 
-console.log(`Получаю прогноз для города ${city}...`)
-http.get('http://api.weatherstack.com/forecast?access_key='+TOKEN+'&query='+city+'&forecast_days='+argv.days)
+//console.log( TOKEN )
 
-перейти на yargs
+const url = 'http://api.weatherstack.com/current?access_key='+TOKEN+'&query="'+city
 
-отображение прогноза, библиотека для консольной графики?
+http.get(url, (res) => {
+    const {statusCode} = res
+    if (statusCode !== 200){
+        console.log(`statusCode: ${statusCode}`)
+        return
+        }
+
+    res.setEncoding('utf8')
+    let rowData = ''
+    res.on('data', (chunk) => rowData += chunk)
+    res.on('end', () => {
+        let parsedData = JSON.parse(rowData)
+        if( parsedData.error ){
+            console.error(parsedData)
+            return
+            }
+        let {current, location} = parsedData
+        //console.log(current)
+        console.log(`Текущая погода для города ${location.name}, страна ${location.country}`)
+        console.log('  температура: '+current.temperature)
+        console.log('  влажность: '+current.humidity)
+        console.log('  скорость ветра: '+current.wind_speed)
+        console.log('  направление ветра: '+wind_ru_dir(current.wind_dir))
+        console.log('  давление: '+current.pressure)
+    })
+}).on('error', (err) => {
+    console.error(err)
+})
+
+function wind_ru_dir(wind_dir){
+    return wind_dir.replaceAll('N','С').replaceAll('S','Ю').replaceAll('W','З').replaceAll('E','В')
+    }

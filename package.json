@@ -5,11 +5,12 @@
   "main": "http-module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node -r dotenv/config http-module.js tokio"
+    "dev": "node -r dotenv/config http-module.js moscow"
   },
   "author": "vsevolod korepanov",
   "license": "ISC",
   "dependencies": {
+    "cli-table": "^0.3.11",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
