@@ -2,7 +2,7 @@
   "name": "002-console",
   "version": "1.0.0",
   "description": "",
-  "main": "http-module.js",
+  "main": "library-express.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node -r dotenv/config http-module.js moscow"
@@ -10,9 +10,11 @@
   "author": "vsevolod korepanov",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "nodemon": "^2.0.20"
   }
 }
