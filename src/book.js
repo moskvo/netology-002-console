@@ -12,13 +12,14 @@ book = {
   */
   class Book {
     static maxid = 0;
-    constructor(title = "", description = "", authors="", favorite="", fileCover="", fileName="") {
+    constructor(title = "", description = "", authors="", favorite="", fileCover="", fileName="", fileBook="") {
         this.title = title
         this.description = description
         this.authors = authors
         this.favorite = favorite
         this.fileCover = fileCover
         this.fileName = fileName
+        this.fileBook = fileBook
         this.id = Book.maxid
         Book.maxid += 1
         }

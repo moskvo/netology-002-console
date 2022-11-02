@@ -4,6 +4,8 @@ const { v4: uuid } = require('uuid')
 const router = express.Router()
 const fileupload = require('../middleware/file')
 
+const err404answer = {errcode: 404, errmsg: "Page not found"}
+
 let library = new Map()
 
 router.get('/', (req, res) => {
@@ -15,18 +17,34 @@ router.get('/:id', (req, res) => {
     const book = library.get(id)
 
     if( book ) {
+        res.status(201)
         res.json(book)
         }
     else {
         res.status(404)
-        res.json({errcode: 404, errmsg: "Page not found"})
+        res.json(err404answer)
         }
         })
 
-router.get('/:id/download', fileupload.single('filebook'), (req,res) => {
+router.get('/:id/download', async (req,res) => {
+    const id = req.params.id
+    const book = library.get(id)
 
+    if( book ) {
+        if( !book.fileBook ) {   
+            res.status(404)
+            res.json({errcode:404, errmsg:"The book hasn't file"})
+        }     
+        const filePath = `./books/${book.fileBook}`;
+        res.status(201)
+        res.download(filePath,book.fileName);
+        }
+    else {
+        res.status(404)
+        res.json(err404answer)
+        }
     })
-    
+       
 router.post('/', (req, res) => {
     const { title, description, authors, favorite, fileCover, fileName } = req.body
 
@@ -34,6 +52,23 @@ router.post('/', (req, res) => {
     library.set(''+newBook.id, newBook)
     res.status(201)
     res.json(newBook)
+    })
+
+router.post('/:id/upload', fileupload.single('filebook'), (req,res)=>{
+    const id = req.params.id
+    const book = library.get(id)
+
+    if( book ){
+        book.fileBook = req.file.filename
+        book.fileName = req.file.originalname
+        res.status(201)
+        res.json(book)
+        }
+    else{
+        res.status(404);
+        res.json(err404answer)
+        }
+
     })
 
 router.put('/:id', (req, res) => {
@@ -52,7 +87,7 @@ router.put('/:id', (req, res) => {
         } 
     else {
         res.status(404)
-        res.json({errcode: 404, errmsg: "Page not found"})
+        res.json(err404answer)
         }
     })
 
@@ -66,7 +101,7 @@ router.delete('/:id', (req, res) => {
         }
     else {
         res.status(404)
-        res.json({errcode: 404, errmsg: "Page not found"})
+        res.json(err404answer)
         }
     })
 
