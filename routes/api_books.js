@@ -9,8 +9,35 @@ const err404answer = {errcode: 404, errmsg: "Page not found"}
 let library = new Map()
 
 router.get('/', (req, res) => {
-    res.json([...library.values()])
+    res.render("books/index", {
+        title: "Library",
+        todos: [...library.values()],
+        })
     })
+
+router.get('/create', (req, res) => {
+    res.render("books/create", {
+            title: "Library | create",
+            todo: {},
+        });
+    });
+
+router.post('/create', 
+    fileupload.fields([
+        { name: 'filecover', maxCount: 1 },
+        { name: 'filebook', maxCount: 1 }
+        ]), 
+    (req, res) => {
+        const { title, description, authors, favorite, filecover, filebook } = req.body
+
+        const newBook = new Book(title, description, authors, favorite||false, fileCover, fileName, fileBook)
+        library.set(''+newBook.id, newBook)
+        book.fileBook = req.file.filename
+        book.fileName = req.file.originalname
+
+        res.redirect('/books')
+    })
+    
     
 router.get('/:id', (req, res) => {
     const id = req.params.id
@@ -45,15 +72,6 @@ router.get('/:id/download', async (req,res) => {
         }
     })
        
-router.post('/', (req, res) => {
-    const { title, description, authors, favorite, fileCover, fileName } = req.body
-
-    const newBook = new Book(title, description, authors, favorite, fileCover, fileName)
-    library.set(''+newBook.id, newBook)
-    res.status(201)
-    res.json(newBook)
-    })
-
 router.post('/:id/upload', fileupload.single('filebook'), (req,res)=>{
     const id = req.params.id
     const book = library.get(id)
@@ -91,18 +109,15 @@ router.put('/:id', (req, res) => {
         }
     })
 
-router.delete('/:id', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
     const {id} = req.params
-    const book = library.get(id)
         
-    if ( book ) {
-        library.delete(id)
-        res.json(true)
+    if ( ! library.has(id) ) {
+        res.redirect('/404')
         }
-    else {
-        res.status(404)
-        res.json(err404answer)
-        }
+
+    library.delete(id)
+    res.redirect('/books')
     })
 
 module.exports = function(library) { library = library; return router; }

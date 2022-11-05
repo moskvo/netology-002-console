@@ -6,7 +6,8 @@ const library = new Map()
 const router = require('./routes/api_books')(library)
  
 const app = express()
-app.use(express.json())
+app.use(express.urlencoded())
+app.set('view engine', "ejs")
 app.use(logger)
 
 app.post('/api/user/login', (req,res) => {
