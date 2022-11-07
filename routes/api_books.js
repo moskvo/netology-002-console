@@ -11,14 +11,14 @@ let library = new Map()
 router.get('/', (req, res) => {
     res.render("books/index", {
         title: "Library",
-        todos: [...library.values()],
+        books: [...library.values()],
         })
     })
 
 router.get('/create', (req, res) => {
     res.render("books/create", {
-            title: "Library | create",
-            todo: {},
+            title: "Book | create",
+            book: {},
         });
     });
 
@@ -28,88 +28,70 @@ router.post('/create',
         { name: 'filebook', maxCount: 1 }
         ]), 
     (req, res) => {
-        const { title, description, authors, favorite, filecover, filebook } = req.body
-
-        const newBook = new Book(title, description, authors, favorite||false, fileCover, fileName, fileBook)
+        const newBook = Book.fromBody(req.body,req.files)
         library.set(''+newBook.id, newBook)
-        book.fileBook = req.file.filename
-        book.fileName = req.file.originalname
-
         res.redirect('/books')
     })
     
     
 router.get('/:id', (req, res) => {
-    const id = req.params.id
-    const book = library.get(id)
+    const book = library.get(req.params.id)
 
-    if( book ) {
-        res.status(201)
-        res.json(book)
+    if( !book ) {
+        res.redirect('/404')
         }
-    else {
-        res.status(404)
-        res.json(err404answer)
-        }
+
+    res.render('books/view', {
+        title: "Book | view",
+        book: book
         })
+    })
 
 router.get('/:id/download', async (req,res) => {
-    const id = req.params.id
-    const book = library.get(id)
+    const book = library.get(req.params.id)
 
-    if( book ) {
-        if( !book.fileBook ) {   
-            res.status(404)
-            res.json({errcode:404, errmsg:"The book hasn't file"})
-        }     
-        const filePath = `./books/${book.fileBook}`;
-        res.status(201)
-        res.download(filePath,book.fileName);
+    if( !book || !book.fileBook ) {
+        res.redirect('/404')
         }
-    else {
-        res.status(404)
-        res.json(err404answer)
-        }
+
+    const filePath = `./books/${book.fileBook}`;
+    res.status(201)
+    res.download(filePath,book.fileName);
     })
        
-router.post('/:id/upload', fileupload.single('filebook'), (req,res)=>{
-    const id = req.params.id
-    const book = library.get(id)
+router.get('/update/:id', (req, res) => {
+    const book = library.get(req.params.id)
 
-    if( book ){
-        book.fileBook = req.file.filename
-        book.fileName = req.file.originalname
-        res.status(201)
-        res.json(book)
-        }
-    else{
-        res.status(404);
-        res.json(err404answer)
+    if( !book ) {
+        res.redirect('/404')
         }
 
+    res.render('books/update', {
+        title: "Book | update",
+        book: book
+        })
+    });    
+
+router.post('/update/:id', 
+    fileupload.fields([
+        { name: 'filecover', maxCount: 1 },
+        { name: 'filebook', maxCount: 1 }
+        ]), 
+    (req, res) => {
+        const bookupdates = Book.fromBody(req.body,req.files)
+        const id = req.params.id
+        const book = library.get(id)
+
+        if (book){
+            book.update(bookupdates)
+            res.redirect(`/books/${id}`)
+            } 
+        else {
+            res.redirect('/404')
+            }
     })
 
-router.put('/:id', (req, res) => {
-    const {title, description, authors, favorite, fileCover, fileName} = req.body
-    const id = req.params.id
-    const book = library.get(id)
-
-    if (book){
-        library.set(id,{
-            ...book,
-            title, description, authors, 
-            favorite, fileCover, fileName
-            })
-
-        res.json(book)
-        } 
-    else {
-        res.status(404)
-        res.json(err404answer)
-        }
-    })
-
-router.delete('/delete/:id', (req, res) => {
+router.post('/delete/:id', (req, res) => {
     const {id} = req.params
         
     if ( ! library.has(id) ) {

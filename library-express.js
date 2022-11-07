@@ -6,7 +6,7 @@ const library = new Map()
 const router = require('./routes/api_books')(library)
  
 const app = express()
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended:true}))
 app.set('view engine', "ejs")
 app.use(logger)
 
@@ -15,7 +15,7 @@ app.post('/api/user/login', (req,res) => {
     res.json({ id: 1, mail: "test@mail.ru" })
     })
 
-app.use('/api/books', router)
+app.use('/books', router)
 
 app.use(err404)
 
