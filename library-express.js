@@ -17,6 +17,10 @@ app.post('/api/user/login', (req,res) => {
 
 app.use('/books', router)
 
+app.use('/', (req,res) => {
+    res.render('index', {title: 'Main'})
+    })
+
 app.use(err404)
 
 const PORT = process.env.PORT || 3000
