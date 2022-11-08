@@ -1,0 +1,41 @@
+PS C:\tmplocal\2.4-docker> docker pull node:15.14-alpine3.13
+15.14-alpine3.13: Pulling from library/node
+540db60ca938: Pull complete
+985b3e0c7aee: Pull complete
+6b60199579be: Pull complete
+56d7f6309c17: Pull complete
+Digest: sha256:25c968387d081940d4e404fa4c9118f9fa5b94ab0d2ea20b671296633b0dbf54
+Status: Downloaded newer image for node:15.14-alpine3.13
+docker.io/library/node:15.14-alpine3.13
+PS C:\tmplocal\2.4-docker> docker run --rm --name first_node -d -v $pwd\data:/var/first/data node:15.14-alpine3.13 ping ya.ru
+3bc3b5f10619b2fd18c70f85c6163172fa0c56af6ea3f3df9906576f0fad90ad
+PS C:\tmplocal\2.4-docker> docker run --rm --name second_node -d -v $pwd\data:/var/second/data node:15.14-alpine3.13 ping ya.ru
+fd42efce83e63757d15a74d59031b5e50fc4bcf6d78c1b5e19db99d975a503a9
+PS C:\tmplocal\2.4-docker> docker ps
+CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS     NAMES
+fd42efce83e6   node:15.14-alpine3.13   "docker-entrypoint.s…"   3 seconds ago    Up 2 seconds              second_node
+3bc3b5f10619   node:15.14-alpine3.13   "docker-entrypoint.s…"   28 seconds ago   Up 28 seconds             first_node
+PS C:\tmplocal\2.4-docker> docker exec -it first_node /bin/sh
+/ # echo "growl" > /var/first/data/from.first
+/ # exit
+PS C:\tmplocal\2.4-docker> docker exec -it second_node /bin/sh
+/ # ls /var/second/data
+from.first   изхоста.txt
+/ # cat /var/second/data/изхоста.txt
+﻿far manager/ #
+/ # exit
+PS C:\tmplocal\2.4-docker> docker stop first_node
+first_node
+PS C:\tmplocal\2.4-docker> docker stop second_node
+second_node
+PS C:\tmplocal\2.4-docker> docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\tmplocal\2.4-docker> docker rmi node:15.14-alpine3.13
+Untagged: node:15.14-alpine3.13
+Untagged: node@sha256:25c968387d081940d4e404fa4c9118f9fa5b94ab0d2ea20b671296633b0dbf54
+Deleted: sha256:15f5ebb46aae83fbc3d4d878478546dc81eb3c88b47d8cf09bce1eee3533bf17
+Deleted: sha256:c9558d772e2407878cc2b1444bfc0c9764bed40740137e1e8534688f59a66d60
+Deleted: sha256:974544899dde2cdc8a8149d8422162438ee19645345b4f492cf69d67bbe28cca
+Deleted: sha256:0384f878ee446c8cb47281c84bc604008533d086ba4bd87bf7f9a9ff7ad73b4e
+Deleted: sha256:b2d5eeeaba3a22b9b8aa97261957974a6bd65274ebd43e1d81d0a7b8b752b116
+PS C:\tmplocal\2.4-docker>
