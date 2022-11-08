@@ -1,0 +1,60 @@
+Windows PowerShell
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+Установите последнюю версию PowerShell для новых функций и улучшения! https://aka.ms/PSWindows
+
+PS C:\WINDOWS\system32> docker pull busybox
+Using default tag: latest
+latest: Pulling from library/busybox
+22b70bddd3ac: Pull complete
+Digest: sha256:6bdd92bf5240be1b5f3bf71324f5e371fe59f0e153b27fa1f1620f78ba16963c
+Status: Downloaded newer image for busybox:latest
+docker.io/library/busybox:latest
+PS C:\WINDOWS\system32> docker images
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+busybox      latest    bc01a3326866   13 days ago   1.24MB
+PS C:\WINDOWS\system32> docker run --name pinger -d busybox ping -c 7 netology.ru
+a73cc03ebb2804277087b221235929debdfde9c19897389746be4f23fe1bb8bd
+PS C:\WINDOWS\system32> docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+a73cc03ebb28   busybox   "ping -c 7 netology.…"   4 seconds ago   Up 4 seconds             pinger
+PS C:\WINDOWS\system32> docker logs -t pinger
+2022-11-08T17:58:23.620267517Z PING netology.ru (188.114.98.224): 56 data bytes
+2022-11-08T17:58:23.620314597Z 64 bytes from 188.114.98.224: seq=0 ttl=37 time=9.653 ms
+2022-11-08T17:58:24.618783087Z 64 bytes from 188.114.98.224: seq=1 ttl=37 time=8.009 ms
+2022-11-08T17:58:25.621106113Z 64 bytes from 188.114.98.224: seq=2 ttl=37 time=9.723 ms
+2022-11-08T17:58:26.622048754Z 64 bytes from 188.114.98.224: seq=3 ttl=37 time=10.139 ms
+2022-11-08T17:58:27.621802360Z 64 bytes from 188.114.98.224: seq=4 ttl=37 time=9.342 ms
+2022-11-08T17:58:28.622091531Z 64 bytes from 188.114.98.224: seq=5 ttl=37 time=9.014 ms
+2022-11-08T17:58:29.626517250Z 64 bytes from 188.114.98.224: seq=6 ttl=37 time=12.914 ms
+2022-11-08T17:58:29.626556956Z
+2022-11-08T17:58:29.626562456Z --- netology.ru ping statistics ---
+2022-11-08T17:58:29.626566604Z 7 packets transmitted, 7 packets received, 0% packet loss
+2022-11-08T17:58:29.626570913Z round-trip min/avg/max = 8.009/9.827/12.914 ms
+PS C:\WINDOWS\system32> docker rm pinger
+pinger
+PS C:\WINDOWS\system32> docker run --name pinger -d busybox ping -c 7 netology.ru
+355efae50b787ca42a289c1ba51298d3407e36e983d6b74afbe2e7aeb8d870d8
+PS C:\WINDOWS\system32> docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+355efae50b78   busybox   "ping -c 7 netology.…"   4 seconds ago   Up 4 seconds             pinger
+PS C:\WINDOWS\system32> docker logs -t pinger
+2022-11-08T17:58:59.708704327Z PING netology.ru (188.114.98.224): 56 data bytes
+2022-11-08T17:58:59.708747350Z 64 bytes from 188.114.98.224: seq=0 ttl=37 time=18.730 ms
+2022-11-08T17:59:00.700483886Z 64 bytes from 188.114.98.224: seq=1 ttl=37 time=9.739 ms
+2022-11-08T17:59:01.701175420Z 64 bytes from 188.114.98.224: seq=2 ttl=37 time=9.744 ms
+2022-11-08T17:59:02.702265069Z 64 bytes from 188.114.98.224: seq=3 ttl=37 time=10.614 ms
+2022-11-08T17:59:03.702254859Z 64 bytes from 188.114.98.224: seq=4 ttl=37 time=9.966 ms
+2022-11-08T17:59:04.702001499Z 64 bytes from 188.114.98.224: seq=5 ttl=37 time=9.683 ms
+2022-11-08T17:59:05.702421239Z 64 bytes from 188.114.98.224: seq=6 ttl=37 time=9.433 ms
+2022-11-08T17:59:05.702459763Z
+2022-11-08T17:59:05.702464091Z --- netology.ru ping statistics ---
+2022-11-08T17:59:05.702467457Z 7 packets transmitted, 7 packets received, 0% packet loss
+2022-11-08T17:59:05.702470824Z round-trip min/avg/max = 9.433/11.129/18.730 ms
+PS C:\WINDOWS\system32> docker rm pinger
+pinger
+PS C:\WINDOWS\system32> docker rmi busybox
+Untagged: busybox:latest
+Untagged: busybox@sha256:6bdd92bf5240be1b5f3bf71324f5e371fe59f0e153b27fa1f1620f78ba16963c
+Deleted: sha256:bc01a3326866eedd68525a4d2d91d2cf86f9893db054601d6be524d5c9d03981
+Deleted: sha256:0438ade5aeea533b00cd75095bec75fbc2b307bace4c89bb39b75d428637bcd8
