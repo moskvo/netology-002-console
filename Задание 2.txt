@@ -1,0 +1,32 @@
+PS C:\WINDOWS\system32> docker pull node:15.14-alpine3.13
+15.14-alpine3.13: Pulling from library/node
+540db60ca938: Pull complete
+985b3e0c7aee: Pull complete
+6b60199579be: Pull complete
+56d7f6309c17: Pull complete
+Digest: sha256:25c968387d081940d4e404fa4c9118f9fa5b94ab0d2ea20b671296633b0dbf54
+Status: Downloaded newer image for node:15.14-alpine3.13
+docker.io/library/node:15.14-alpine3.13
+PS C:\WINDOWS\system32> docker images
+REPOSITORY   TAG                IMAGE ID       CREATED         SIZE
+node         15.14-alpine3.13   15f5ebb46aae   19 months ago   112MB
+PS C:\WINDOWS\system32> docker run --rm --name mynode -it -e NAME=Всеволод -e SURNAME=Корепанов node:15.14-alpine3.13
+Welcome to Node.js v15.14.0.
+Type ".help" for more information.
+> console.log(`Привет, ${process.env.NAME} ${process.env.SURNAME}!`)
+Привет, Всеволод Корепанов!
+undefined
+>
+PS C:\WINDOWS\system32> docker stop mynode
+Error response from daemon: No such container: mynode
+PS C:\WINDOWS\system32> docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\WINDOWS\system32> docker rmi node:15.14-alpine3.13
+Untagged: node:15.14-alpine3.13
+Untagged: node@sha256:25c968387d081940d4e404fa4c9118f9fa5b94ab0d2ea20b671296633b0dbf54
+Deleted: sha256:15f5ebb46aae83fbc3d4d878478546dc81eb3c88b47d8cf09bce1eee3533bf17
+Deleted: sha256:c9558d772e2407878cc2b1444bfc0c9764bed40740137e1e8534688f59a66d60
+Deleted: sha256:974544899dde2cdc8a8149d8422162438ee19645345b4f492cf69d67bbe28cca
+Deleted: sha256:0384f878ee446c8cb47281c84bc604008533d086ba4bd87bf7f9a9ff7ad73b4e
+Deleted: sha256:b2d5eeeaba3a22b9b8aa97261957974a6bd65274ebd43e1d81d0a7b8b752b116
+PS C:\WINDOWS\system32>
