@@ -2,10 +2,10 @@
   "name": "002-console",
   "version": "1.0.0",
   "description": "",
-  "main": "library-express.js",
+  "main": "library.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon library-express.js"
+    "dev": "nodemon -L"
   },
   "author": "vsevolod korepanov",
   "license": "ISC",
