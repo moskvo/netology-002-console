@@ -4,7 +4,7 @@ const err404 = require('./middleware/err-404')
 const path = require('path')
 
 const library = new Map()
-const router = require('./routes/api_books')(library)
+const booksrouter = require('./routes/api_books')(library,process.env.COUNTER_URL||'localhost')
  
 const app = express()
 app.use(express.urlencoded({extended:true}))
@@ -17,7 +17,7 @@ app.post('/api/user/login', (req,res) => {
     res.json({ id: 1, mail: "test@mail.ru" })
     })
 
-app.use('/books', router)
+app.use('/books', booksrouter )
 
 app.use('/', (req,res) => {
     res.render('index', {title: 'Main'})
@@ -25,5 +25,4 @@ app.use('/', (req,res) => {
 
 app.use(err404)
 
-const PORT = process.env.PORT || 3000
-app.listen(PORT, ()=>console.log('Listen'))
+app.listen( process.env.PORT || 3000, ()=>console.log('Listen'))

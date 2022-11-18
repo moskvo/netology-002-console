@@ -2,10 +2,11 @@
   "name": "002-console",
   "version": "1.0.0",
   "description": "",
-  "main": "library.js",
+  "main": "src/library.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -L"
+    "dev": "nodemon -L",
+    "server": "node src/library.js"
   },
   "author": "vsevolod korepanov",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.0",
     "uuid": "^9.0.0",
     "yargs": "^17.6.0"
   },

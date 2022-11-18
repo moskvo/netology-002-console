@@ -1,0 +1,29 @@
+services:
+  storage: # сервис с именем storage
+    image: redis # использует образ redis:latest
+    volumes:
+      - data:/data # подключает диск
+  counter: # сервис с именем counter
+    build: ./counter # собирает образ из папки ./counter
+    ports:
+      - 3001:3001 # мапит порт хоста на порт контейнера 
+    environment:
+      - PORT=3001 # передает переменные среды
+      - REDIS_URL=redis://storage
+    working_dir: /app
+    depends_on:
+      - storage # устанавливает зависимость от сервиса storage
+  library:
+    build: .
+    image: 2.5-dockerize
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - COUNTER_URL=http://counter:3001
+    working_dir: /app
+    depends_on:
+      - counter
+
+volumes:
+  data: {} # создаёт именованый диск logs_data

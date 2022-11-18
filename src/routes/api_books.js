@@ -3,10 +3,10 @@ const express = require('express')
 const { v4: uuid } = require('uuid')
 const router = express.Router()
 const fileupload = require('../middleware/file')
-
-const err404answer = {errcode: 404, errmsg: "Page not found"}
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 let library = new Map()
+let COUNTER_URL = 'localhost';
 
 router.get('/', (req, res) => {
     res.render("books/index", {
@@ -34,16 +34,19 @@ router.post('/create',
     })
     
     
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const book = library.get(req.params.id)
 
     if( !book ) {
         res.redirect('/404')
         }
+    const response = await fetch(`${COUNTER_URL}/counter/${req.params.id}/incr`, {method:'POST'});
+    const {cnt: count} = await response.json();
 
     res.render('books/view', {
         title: "Book | view",
-        book: book
+        book: book,
+        count: count
         })
     })
 
@@ -102,4 +105,4 @@ router.post('/delete/:id', (req, res) => {
     res.redirect('/books')
     })
 
-module.exports = function(library) { library = library; return router; }
+module.exports = function(library,cnt_url) { library = library; COUNTER_URL = cnt_url; return router; }
